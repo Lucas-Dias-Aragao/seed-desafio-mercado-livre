@@ -1,0 +1,26 @@
+package com.dev.eficiente.desafio.marketplace.exception;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ErrorResponse {
+
+    @Getter
+    private String mensagem;
+
+    @Getter
+    private HttpStatus statusCode;
+
+    public ErrorResponse(final String mensagem) {
+        this.mensagem = mensagem;
+        this.statusCode = HttpStatus.BAD_REQUEST;
+    }
+
+    public ErrorResponse(final String mensagem, final HttpStatus statusCode) {
+        this.mensagem = mensagem;
+        this.statusCode = statusCode;
+    }
+
+}
