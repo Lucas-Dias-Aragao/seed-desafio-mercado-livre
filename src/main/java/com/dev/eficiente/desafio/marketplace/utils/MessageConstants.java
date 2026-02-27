@@ -8,4 +8,5 @@ public class MessageConstants {
     public static final String TAMANHO_INVALIDO = "A senha deve ter no mínimo 6 dígitos.";
     public static final String DATA_OBRIGATORIA = "Por favor, informe uma data válida.";
     public static final String DADOS_INVALIDOS = "Dados de cadastro inválidos, por favor, verifique.";
+    public static final String EMAIL_JA_CADASTRADO = "Nao foi possivel realizar um cadastro com o e-mail informado.";
 }

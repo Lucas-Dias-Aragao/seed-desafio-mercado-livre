@@ -1,4 +1,4 @@
-package com.dev.eficiente.desafio.marketplace.entity;
+package com.dev.eficiente.desafio.marketplace.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +27,9 @@ public class Usuario {
 
     @Column(name = "DATA_INCLUSAO", nullable = false)
     private LocalDateTime dataInclusao;
+
+    @Deprecated
+    public Usuario(){}
 
     public Usuario(final String login, final String senha, final LocalDateTime dataInclusao) {
         this.login = login;
