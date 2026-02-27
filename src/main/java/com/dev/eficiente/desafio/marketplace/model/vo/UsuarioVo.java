@@ -1,6 +1,8 @@
 package com.dev.eficiente.desafio.marketplace.model.vo;
 
+import com.dev.eficiente.desafio.marketplace.model.entity.Usuario;
 import com.dev.eficiente.desafio.marketplace.utils.MessageConstants;
+import com.dev.eficiente.desafio.marketplace.validation.annotation.UniqueValue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +21,7 @@ public class UsuarioVo {
 
     @NotBlank(message = MessageConstants.LOGIN_OBRIGATORIO)
     @Email(message = MessageConstants.FORMATO_LOGIN_INVALIDO)
+    @UniqueValue(fieldName = "login", domainClass = Usuario.class, message =MessageConstants.EMAIL_JA_CADASTRADO)
     private String login;
 
     @NotBlank(message = MessageConstants.SENHA_OBRIGATORIA)

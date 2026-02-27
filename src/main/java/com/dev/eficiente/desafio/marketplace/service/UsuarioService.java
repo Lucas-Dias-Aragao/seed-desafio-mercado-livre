@@ -1,6 +1,6 @@
 package com.dev.eficiente.desafio.marketplace.service;
 
-import com.dev.eficiente.desafio.marketplace.entity.Usuario;
+import com.dev.eficiente.desafio.marketplace.model.entity.Usuario;
 import com.dev.eficiente.desafio.marketplace.exception.BusinessException;
 import com.dev.eficiente.desafio.marketplace.model.vo.UsuarioVo;
 import com.dev.eficiente.desafio.marketplace.repository.UsuarioRepository;
