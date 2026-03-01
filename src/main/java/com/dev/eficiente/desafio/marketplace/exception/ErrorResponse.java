@@ -17,7 +17,6 @@ public class ErrorResponse {
 
     public ErrorResponse(final String mensagem) {
         this.mensagem = mensagem;
-        this.statusCode = HttpStatus.BAD_REQUEST;
     }
 
     public ErrorResponse(final String mensagem, final HttpStatus statusCode) {
