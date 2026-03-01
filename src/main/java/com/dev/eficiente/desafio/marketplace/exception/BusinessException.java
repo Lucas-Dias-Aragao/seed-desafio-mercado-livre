@@ -12,8 +12,4 @@ public class BusinessException extends RuntimeException {
 
     private HttpStatus status;
 
-    public BusinessException(final String mensagem){
-        this.mensagem = mensagem;
-    }
-
 }

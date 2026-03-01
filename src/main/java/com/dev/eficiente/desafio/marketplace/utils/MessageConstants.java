@@ -10,4 +10,6 @@ public class MessageConstants {
     public static final String DADOS_INVALIDOS = "Dados de cadastro inválidos, por favor, verifique.";
     public static final String EMAIL_JA_CADASTRADO = "Nao foi possivel realizar um cadastro com o e-mail informado.";
     public static final String NOME_CATEGORIA_INVALIDO = "Por favor, informe um nome válido para a categoria.";
+    public static final String CATEGORIA_MAE_INVALIDA = "Id da categoria \'mãe\' inválido";
+    public static final CharSequence INFORMACAO_JA_CADASTRADA_ANTERIORMENTE = "Informação já cadastrada anteriormente.";
 }

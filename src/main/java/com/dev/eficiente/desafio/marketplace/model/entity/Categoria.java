@@ -36,4 +36,8 @@ public class Categoria {
         this.nome = vo.getNome();
         this.idCategoriaMae = vo.getIdCategoriaMae();
     }
+
+    public Categoria(final String nome) {
+        this.nome = nome;
+    }
 }
