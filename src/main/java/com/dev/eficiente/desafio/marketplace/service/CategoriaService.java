@@ -4,6 +4,7 @@ import com.dev.eficiente.desafio.marketplace.exception.BusinessException;
 import com.dev.eficiente.desafio.marketplace.model.entity.Categoria;
 import com.dev.eficiente.desafio.marketplace.model.vo.CategoriaRequestVo;
 import com.dev.eficiente.desafio.marketplace.repository.CategoriaRepository;
+import com.dev.eficiente.desafio.marketplace.utils.MessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class CategoriaService {
 
         boolean existsCategoria = categoriaRepository.existsById(idCategoriaMae);
         if (!existsCategoria) {
-            throw new BusinessException("Id de categoria \'mãe\' inválido", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(MessageConstants.CATEGORIA_MAE_INVALIDA, HttpStatus.BAD_REQUEST);
         }
     }
 }
