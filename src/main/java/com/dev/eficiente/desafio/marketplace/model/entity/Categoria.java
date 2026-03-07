@@ -33,8 +33,8 @@ public class Categoria {
     public Categoria() {}
 
     public Categoria(final CategoriaRequestVo vo) {
-        this.nome = vo.getNome();
-        this.idCategoriaMae = vo.getIdCategoriaMae();
+        this.nome = vo.nome();
+        this.idCategoriaMae = vo.idCategoriaMae();
     }
 
     public Categoria(final String nome) {

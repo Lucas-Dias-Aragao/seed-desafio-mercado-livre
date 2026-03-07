@@ -28,7 +28,7 @@ public class CategoriaServiceTest {
     @DisplayName("Deve cadastrar categoria se dados forem válidos")
     void deveCriarCategoriaSeDadosForemValidos() {
         CategoriaRequestVo vo = CategoriaRequestVo.builder().nome("Teste").idCategoriaMae(2L).build();
-        when(categoriaRepository.existsById(vo.getIdCategoriaMae())).thenReturn(true);
+        when(categoriaRepository.existsById(vo.idCategoriaMae())).thenReturn(true);
 
         Categoria novaCategoria = new Categoria(vo);
         when(categoriaRepository.save(any(Categoria.class))).thenReturn(novaCategoria);

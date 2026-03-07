@@ -58,7 +58,7 @@ public class CategoriaControllerIT {
             MockHttpServletResponse response = result.getResponse();
 
             assertEquals(200, response.getStatus());
-            assertEquals("Categoria " + vo.getNome() + " criada com sucesso.", response.getContentAsString());
+            assertEquals("Categoria " + vo.nome() + " criada com sucesso.", response.getContentAsString());
         }
 
     }
