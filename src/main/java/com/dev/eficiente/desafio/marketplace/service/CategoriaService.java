@@ -18,7 +18,7 @@ public class CategoriaService {
 
     @Transactional(rollbackFor = RuntimeException.class)
     public String createCategoria(final CategoriaRequestVo vo) throws BusinessException {
-        validateIdCategoriaMae(vo.getIdCategoriaMae());
+        validateIdCategoriaMae(vo.idCategoriaMae());
 
         Categoria novaCategoria = new Categoria(vo);
         novaCategoria = categoriaRepository.save(novaCategoria);

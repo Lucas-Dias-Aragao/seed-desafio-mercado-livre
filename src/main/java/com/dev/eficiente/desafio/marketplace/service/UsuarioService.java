@@ -24,12 +24,12 @@ public class UsuarioService {
     @Transactional(rollbackFor = RuntimeException.class)
     public void createNovoUsuario(final UsuarioVo vo) throws BusinessException {
 
-        if(Objects.isNull(vo.getSenha()) || Objects.isNull(vo.getLogin())) {
+        if(Objects.isNull(vo.senha()) || Objects.isNull(vo.login())) {
             throw new BusinessException(MessageConstants.DADOS_INVALIDOS, HttpStatus.BAD_REQUEST);
         }
 
-        String hashSenha = passwordEncoder.encode(vo.getSenha());
-        Usuario novoUsuario = new Usuario(vo.getLogin(), hashSenha, vo.getDataCadastro());
+        String hashSenha = passwordEncoder.encode(vo.senha());
+        Usuario novoUsuario = new Usuario(vo.login(), hashSenha, vo.dataCadastro());
 
         usuarioRepository.save(novoUsuario);
 

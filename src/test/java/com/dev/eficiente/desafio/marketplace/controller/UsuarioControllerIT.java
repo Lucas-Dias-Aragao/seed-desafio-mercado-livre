@@ -48,7 +48,7 @@ public class UsuarioControllerIT {
         @Test
         @DisplayName("Se dados válidos, cria usuário com sucesso")
         void deveCriarUsuarioComSucesso() throws Exception {
-            UsuarioVo vo = new UsuarioVo("email@email.com", "1234567", LocalDateTime.now().minusMinutes(1));
+            UsuarioVo vo = new UsuarioVo("login@login.com", "1234567", LocalDateTime.now().minusMinutes(1));
 
             MvcResult result = mockMvc.perform(post(URL_USUARIO)
                             .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +81,7 @@ public class UsuarioControllerIT {
 
             assertEquals(400, response.getStatus());
             assertEquals(MessageConstants.LOGIN_OBRIGATORIO, errorResponse.get("login"));
-            assertEquals(MessageConstants.SENHA_OBRIGATORIA, errorResponse.get("senha"));
+            assertEquals(MessageConstants.SENHA_OBRIGATORIA, errorResponse.get("password"));
             assertEquals(MessageConstants.DATA_OBRIGATORIA, errorResponse.get("dataCadastro"));
 
         }
@@ -89,10 +89,10 @@ public class UsuarioControllerIT {
         @Test
         @DisplayName("Não deve criar usuários com o mesmo login")
         void naoDeveCriarUsuarioSeEmailJaForCadastrado() throws Exception {
-            Usuario usuario = new Usuario("email@email.com", "123456", LocalDateTime.now().minusMinutes(1));
+            Usuario usuario = new Usuario("login@login.com", "123456", LocalDateTime.now().minusMinutes(1));
             usuarioRepository.saveAndFlush(usuario);
 
-            UsuarioVo vo = new UsuarioVo("email@email.com", "123456", LocalDateTime.now().minusMinutes(1));
+            UsuarioVo vo = new UsuarioVo("login@login.com", "123456", LocalDateTime.now().minusMinutes(1));
 
             MvcResult result = mockMvc.perform(post(URL_USUARIO)
                             .contentType(MediaType.APPLICATION_JSON)
