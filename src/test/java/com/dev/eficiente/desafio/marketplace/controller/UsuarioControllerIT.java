@@ -1,10 +1,9 @@
 package com.dev.eficiente.desafio.marketplace.controller;
 
-import com.dev.eficiente.desafio.marketplace.exception.ErrorResponse;
 import com.dev.eficiente.desafio.marketplace.model.entity.Usuario;
 import com.dev.eficiente.desafio.marketplace.model.vo.UsuarioVo;
-import com.dev.eficiente.desafio.marketplace.repository.UsuarioRepository;
 import com.dev.eficiente.desafio.marketplace.utils.MessageConstants;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,11 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
@@ -28,16 +29,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class UsuarioControllerIT {
-
-    @Autowired
-    protected MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+@Transactional
+public class UsuarioControllerIT extends BaseControllerIT {
 
     private static final String URL_USUARIO = "/usuarios";
 
@@ -51,6 +44,7 @@ public class UsuarioControllerIT {
             UsuarioVo vo = new UsuarioVo("login@login.com", "1234567", LocalDateTime.now().minusMinutes(1));
 
             MvcResult result = mockMvc.perform(post(URL_USUARIO)
+                            .header(HttpHeaders.AUTHORIZATION, generatedToken())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(vo)))
                     .andReturn();
@@ -72,6 +66,7 @@ public class UsuarioControllerIT {
             UsuarioVo vo = new UsuarioVo(null, null, null);
 
             MvcResult result = mockMvc.perform(post(URL_USUARIO)
+                            .header(HttpHeaders.AUTHORIZATION, generatedToken())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(vo)))
                     .andReturn();
@@ -81,7 +76,7 @@ public class UsuarioControllerIT {
 
             assertEquals(400, response.getStatus());
             assertEquals(MessageConstants.LOGIN_OBRIGATORIO, errorResponse.get("login"));
-            assertEquals(MessageConstants.SENHA_OBRIGATORIA, errorResponse.get("password"));
+            assertEquals(MessageConstants.SENHA_OBRIGATORIA, errorResponse.get("senha"));
             assertEquals(MessageConstants.DATA_OBRIGATORIA, errorResponse.get("dataCadastro"));
 
         }
@@ -95,6 +90,7 @@ public class UsuarioControllerIT {
             UsuarioVo vo = new UsuarioVo("login@login.com", "123456", LocalDateTime.now().minusMinutes(1));
 
             MvcResult result = mockMvc.perform(post(URL_USUARIO)
+                            .header(HttpHeaders.AUTHORIZATION, generatedToken())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(vo)))
                     .andReturn();
@@ -107,8 +103,4 @@ public class UsuarioControllerIT {
         }
     }
 
-    @BeforeEach
-    void before() {
-        usuarioRepository.deleteAll();
-    }
 }

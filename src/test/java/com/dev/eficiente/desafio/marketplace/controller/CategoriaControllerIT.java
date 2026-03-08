@@ -12,11 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
@@ -28,13 +30,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class CategoriaControllerIT {
-
-    @Autowired
-    protected MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+@Transactional
+public class CategoriaControllerIT extends BaseControllerIT {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
@@ -51,6 +48,7 @@ public class CategoriaControllerIT {
             CategoriaRequestVo vo = CategoriaRequestVo.builder().nome("Teste").build();
 
             MvcResult result = mockMvc.perform(post(URL_CATEGORIA)
+                            .header(HttpHeaders.AUTHORIZATION, generatedToken())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(vo)))
                     .andReturn();
@@ -73,6 +71,7 @@ public class CategoriaControllerIT {
             CategoriaRequestVo vo = CategoriaRequestVo.builder().nome("").build();
 
             MvcResult result = mockMvc.perform(post(URL_CATEGORIA)
+                            .header(HttpHeaders.AUTHORIZATION, generatedToken())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(vo)))
                     .andReturn();
@@ -89,6 +88,7 @@ public class CategoriaControllerIT {
             CategoriaRequestVo vo = CategoriaRequestVo.builder().nome("Teste").idCategoriaMae(1L).build();
 
             MvcResult result = mockMvc.perform(post(URL_CATEGORIA)
+                            .header(HttpHeaders.AUTHORIZATION, generatedToken())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(vo)))
                     .andReturn();
@@ -108,6 +108,7 @@ public class CategoriaControllerIT {
             CategoriaRequestVo vo = CategoriaRequestVo.builder().nome("Teste").idCategoriaMae(1L).build();
 
             MvcResult result = mockMvc.perform(post(URL_CATEGORIA)
+                            .header(HttpHeaders.AUTHORIZATION, generatedToken())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(vo)))
                     .andReturn();
