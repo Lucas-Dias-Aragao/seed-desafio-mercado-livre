@@ -9,8 +9,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Table(schema = "marketplace", name = "TB_PRODUTO_CARACTERISTICA")
 public class ProdutoCaracteristica {
 
@@ -28,5 +30,11 @@ public class ProdutoCaracteristica {
 
     @Column(name = "VALOR", nullable = false)
     private String valor;
+
+    public ProdutoCaracteristica(final Produto produto, final CaracteristicaCategoria caracteristica, final String valor) {
+        this.produto = produto;
+        this.caracteristica = caracteristica;
+        this.valor = valor;
+    }
 
 }
