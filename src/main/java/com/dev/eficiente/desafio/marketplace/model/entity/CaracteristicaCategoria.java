@@ -12,8 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Table(schema = "marketplace", name = "TB_CARACTERISTICA_CATEGORIA")
 public class CaracteristicaCategoria {
 
@@ -21,6 +24,7 @@ public class CaracteristicaCategoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(name = "NOME", nullable = false)
     private String nome;
 
@@ -31,5 +35,11 @@ public class CaracteristicaCategoria {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CATEGORIA", nullable = false)
     private Categoria categoria;
+
+    public CaracteristicaCategoria(final String nome, final TipoCaracteristicaEnum tipo, final Categoria categoria) {
+        this.nome = nome;
+        this.tipo = tipo;
+        this.categoria = categoria;
+    }
 
 }
