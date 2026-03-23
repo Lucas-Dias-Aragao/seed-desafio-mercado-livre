@@ -19,7 +19,7 @@ public record ProdutoRequestVo (
     String descricao,
 
     @NotNull(message = MessageConstants.VALOR_INVALIDO)
-    @Min(value = 0, message = MessageConstants.VALOR_INVALIDO)
+    @Min(value = 1, message = MessageConstants.VALOR_INVALIDO)
     BigDecimal valor,
 
     @NotNull(message = MessageConstants.QUANTIDADE_INVALIDA)

@@ -1,6 +1,7 @@
 package com.dev.eficiente.desafio.marketplace.service;
 
 import com.dev.eficiente.desafio.marketplace.exception.BusinessException;
+import com.dev.eficiente.desafio.marketplace.exception.CaracteristicaCategoriaNotFoundException;
 import com.dev.eficiente.desafio.marketplace.exception.CategoriaNotFoundException;
 import com.dev.eficiente.desafio.marketplace.model.entity.Categoria;
 import com.dev.eficiente.desafio.marketplace.model.vo.CategoriaRequestVo;
@@ -40,7 +41,6 @@ public class CategoriaService {
     }
 
     public Categoria findCategoriaById(final Long categoriaId) {
-        return categoriaRepository.findById(categoriaId)
-                .orElseThrow(CategoriaNotFoundException::new);
+        return categoriaRepository.findById(categoriaId).orElseThrow(CategoriaNotFoundException::new);
     }
 }
