@@ -1,5 +1,6 @@
 package com.dev.eficiente.desafio.marketplace.service;
 
+import com.dev.eficiente.desafio.marketplace.exception.CategoriaNotFoundException;
 import com.dev.eficiente.desafio.marketplace.model.entity.Categoria;
 import com.dev.eficiente.desafio.marketplace.model.vo.CategoriaRequestVo;
 import com.dev.eficiente.desafio.marketplace.repository.CategoriaRepository;
@@ -10,7 +11,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,6 +43,18 @@ public class CategoriaServiceTest {
         verify(categoriaRepository).existsById(2L);
         verify(categoriaRepository).save(any(Categoria.class));
 
+    }
+
+    @Test
+    @DisplayName("Deve lançar exception se categoria não existir")
+    void deveLancarExceptionSeCategoriaNaoExistir() {
+        when(categoriaRepository.findById(1L)).thenReturn(Optional.empty());
+
+        var ex = assertThrows(CategoriaNotFoundException.class, () -> {
+            categoriaService.findCategoriaById(1L);
+        });
+
+        assertEquals("Categoria não encontrada", ex.getMensagem());
     }
 
 }

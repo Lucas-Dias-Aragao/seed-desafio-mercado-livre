@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(schema = "marketplace", name = "TB_CARACTERISTICA_CATEGORIA")
 public class CaracteristicaCategoria {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

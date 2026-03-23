@@ -2,7 +2,6 @@ package com.dev.eficiente.desafio.marketplace.controller;
 
 import com.dev.eficiente.desafio.marketplace.model.entity.Categoria;
 import com.dev.eficiente.desafio.marketplace.model.vo.CategoriaRequestVo;
-import com.dev.eficiente.desafio.marketplace.model.vo.UsuarioVo;
 import com.dev.eficiente.desafio.marketplace.repository.CategoriaRepository;
 import com.dev.eficiente.desafio.marketplace.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +15,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import tools.jackson.databind.ObjectMapper;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -62,7 +57,7 @@ public class CategoriaControllerIT extends BaseControllerIT {
     }
 
     @Nested
-    @DisplayName("POST /categoria - 200 OK")
+    @DisplayName("POST /categoria - 400 BAD REQUEST")
     class BadRequest {
 
         @Test

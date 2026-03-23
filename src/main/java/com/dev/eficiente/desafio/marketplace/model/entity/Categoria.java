@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
 @Entity
 @Table(schema = "marketplace", name = "TB_CATEGORIA")
 public class Categoria {
@@ -20,12 +21,10 @@ public class Categoria {
     private Long id;
 
     @Setter
-    @Getter
     @Column(name = "NOME", nullable = false)
     private String nome;
 
     @Setter
-    @Getter
     @Column(name = "ID_CATEGORIA_MAE")
     private Long idCategoriaMae;
 

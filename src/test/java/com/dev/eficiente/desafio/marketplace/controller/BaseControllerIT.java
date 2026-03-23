@@ -3,7 +3,6 @@ package com.dev.eficiente.desafio.marketplace.controller;
 import com.dev.eficiente.desafio.marketplace.config.security.TokenService;
 import com.dev.eficiente.desafio.marketplace.model.entity.Usuario;
 import com.dev.eficiente.desafio.marketplace.repository.UsuarioRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
