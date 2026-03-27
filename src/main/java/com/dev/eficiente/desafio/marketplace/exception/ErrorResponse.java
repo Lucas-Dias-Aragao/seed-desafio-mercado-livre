@@ -19,9 +19,4 @@ public class ErrorResponse {
         this.mensagem = mensagem;
     }
 
-    public ErrorResponse(final String mensagem, final HttpStatus statusCode) {
-        this.mensagem = mensagem;
-        this.statusCode = statusCode;
-    }
-
 }
