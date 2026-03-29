@@ -5,15 +5,14 @@ import com.dev.eficiente.desafio.marketplace.model.vo.ProdutoRequestVo;
 import com.dev.eficiente.desafio.marketplace.service.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class ProdutoController extends BaseController {
     }
 
     @PostMapping("/{idProduto}/imagens")
-    public void cadastraImagensProduto(@PathVariable("idProduto") Long idProduto, @Valid NovasImagensRequest imagens,
+    public void cadastraImagensProduto(@PathVariable("idProduto") Long idProduto, @Valid @ModelAttribute NovasImagensRequest imagens,
                                         final Principal usuarioLogado) {
         produtoService.cadastraImagensProduto(idProduto, imagens, getUsuarioLogado(usuarioLogado));
     }

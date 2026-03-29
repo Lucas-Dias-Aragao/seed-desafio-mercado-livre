@@ -2,6 +2,8 @@ package com.dev.eficiente.desafio.marketplace.controller;
 
 import com.dev.eficiente.desafio.marketplace.model.entity.CaracteristicaCategoria;
 import com.dev.eficiente.desafio.marketplace.model.entity.Categoria;
+import com.dev.eficiente.desafio.marketplace.model.entity.Produto;
+import com.dev.eficiente.desafio.marketplace.model.entity.ProdutoImagem;
 import com.dev.eficiente.desafio.marketplace.model.enumeration.TipoCaracteristicaEnum;
 import com.dev.eficiente.desafio.marketplace.model.vo.ProdutoCaracteristicaRequestVo;
 import com.dev.eficiente.desafio.marketplace.model.vo.ProdutoRequestVo;
@@ -19,17 +21,21 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,6 +49,8 @@ public class ProdutoControllerIT extends BaseControllerIT {
     private static CaracteristicaCategoria caracteristicaCategoria2;
     private static CaracteristicaCategoria caracteristicaCategoria3;
     private static final String URL_PRODUTOS = "/produtos";
+    private static final String URL_IMAGEM = "/imagens";
+    private static final String URL_BARRA = "/";
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -137,6 +145,110 @@ public class ProdutoControllerIT extends BaseControllerIT {
         }
     }
 
+    @Nested
+    @DisplayName("POST /produtos/{id}/imagens")
+    class PostImagemProduto {
+
+        @Nested
+        class Success {
+
+            @Test
+            @DisplayName("Se dados válidos, salve imagens do produto com sucesso")
+            void deveFazerUploadDasImagensDoProdutoComSucesso() throws Exception {
+                Produto produto = createProduto();
+
+                MockMultipartFile imagem = createMockImagem("img1", "conteudo fake");
+                MockMultipartFile imagem2 = createMockImagem("img2", "conteudo fake");
+
+                StringBuilder url = new StringBuilder(URL_PRODUTOS)
+                        .append(URL_BARRA)
+                        .append(produto.getId())
+                        .append(URL_BARRA)
+                        .append(URL_IMAGEM);
+
+                MvcResult result = mockMvc.perform(multipart(url.toString())
+                                .file(imagem)
+                                .file(imagem2)
+                                .header(HttpHeaders.AUTHORIZATION, generatedToken())
+                                .contentType(MediaType.MULTIPART_FORM_DATA)
+                                .with(request -> {
+                                    request.setMethod("POST");
+                                    return request;
+                                })
+                        )
+                        .andReturn();
+
+                MockHttpServletResponse response = result.getResponse();
+
+                assertEquals(200, response.getStatus());
+            }
+        }
+
+        @Nested
+        class BadRequest {
+
+            @Test
+            @DisplayName("Se lista de imagens for vazia, deve lançar exception")
+            void seListaDeImagensForVaziaDeveLancarException() throws Exception {
+                Produto produto = createProduto();
+
+                StringBuilder url = new StringBuilder(URL_PRODUTOS)
+                        .append(URL_BARRA)
+                        .append(produto.getId())
+                        .append(URL_BARRA)
+                        .append(URL_IMAGEM);
+
+                MvcResult result = mockMvc.perform(multipart(url.toString())
+                                .header(HttpHeaders.AUTHORIZATION, generatedToken())
+                                .contentType(MediaType.MULTIPART_FORM_DATA)
+                                .with(request -> {
+                                    request.setMethod("POST");
+                                    return request;
+                                })
+                        )
+                        .andReturn();
+
+                MockHttpServletResponse response = result.getResponse();
+                Map<String, String> errorResponse = objectMapper.readValue(response.getContentAsString(), Map.class);
+
+                assertEquals(400, response.getStatus());
+                assertEquals(MessageConstants.QTD_IMAGENS_INVALIDA, errorResponse.get("imagens"));
+            }
+
+            @Test
+            @DisplayName("deve lançar exception se conteudo da imagem for inválido")
+            void deveLancarExceptionSeConteudoDeImagensForInvalido() throws Exception {
+                Produto produto = createProduto();
+                MockMultipartFile imagem = createMockImagem("img1", "");
+
+                StringBuilder url = new StringBuilder(URL_PRODUTOS)
+                        .append(URL_BARRA)
+                        .append(produto.getId())
+                        .append(URL_BARRA)
+                        .append(URL_IMAGEM);
+
+                MvcResult result = mockMvc.perform(multipart(url.toString())
+                                .file(imagem)
+                                .header(HttpHeaders.AUTHORIZATION, generatedToken())
+                                .contentType(MediaType.MULTIPART_FORM_DATA)
+                                .with(request -> {
+                                    request.setMethod("POST");
+                                    return request;
+                                })
+                        )
+                        .andReturn();
+
+                MockHttpServletResponse response = result.getResponse();
+                Map<String, String> errorResponse = objectMapper.readValue(response.getContentAsString(), Map.class);
+
+                assertEquals(400, response.getStatus());
+                assertEquals("Imagem " + imagem.getOriginalFilename() + " não possui conteúdo válido", errorResponse.get("mensagem"));
+            }
+
+        }
+
+    }
+
     @BeforeEach
     void before() {
         produtoRepository.deleteAll();
@@ -166,5 +278,31 @@ public class ProdutoControllerIT extends BaseControllerIT {
 
         assertNotNull(novaCategoria.getId());
         return novaCategoria;
+    }
+
+    private Produto createProduto() {
+        Produto produto = Produto.builder()
+                .nome("Smartphone Xing Ling")
+                .descricao("Smartphone Xing Ling 256gb")
+                .valor(BigDecimal.valueOf(1500))
+                .qtdDisponivel(1)
+                .dataInclusao(LocalDateTime.now())
+                .categoria(categoriaCelulares)
+                .caracteristicas(List.of())
+                .build();
+
+        produto = produtoRepository.save(produto);
+        assertNotNull(produto.getId());
+
+        return produto;
+    }
+
+    private MockMultipartFile createMockImagem(final String nomeImagem, final String conteudo) {
+        return new MockMultipartFile(
+                "imagens",
+                nomeImagem + ".jpg",
+                MediaType.IMAGE_JPEG_VALUE,
+                conteudo.getBytes()
+        );
     }
 }
