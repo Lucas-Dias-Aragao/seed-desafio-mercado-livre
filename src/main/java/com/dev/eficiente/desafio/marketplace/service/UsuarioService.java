@@ -1,5 +1,6 @@
 package com.dev.eficiente.desafio.marketplace.service;
 
+import com.dev.eficiente.desafio.marketplace.model.dto.UsuarioDTO;
 import com.dev.eficiente.desafio.marketplace.model.entity.Usuario;
 import com.dev.eficiente.desafio.marketplace.exception.BusinessException;
 import com.dev.eficiente.desafio.marketplace.model.vo.UsuarioVo;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Objects;
 
 @Service
@@ -33,5 +35,10 @@ public class UsuarioService {
 
         usuarioRepository.save(novoUsuario);
 
+    }
+
+    public UsuarioDTO getUsuarioLogado(final Principal usuarioLogado) {
+        var usuario = usuarioRepository.findByLogin(usuarioLogado.getName().toString()).get();
+        return new UsuarioDTO(usuario.getId(), usuario.getLogin());
     }
 }

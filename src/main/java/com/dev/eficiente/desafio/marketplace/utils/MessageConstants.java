@@ -19,4 +19,5 @@ public class MessageConstants {
     public static final String CATEGORIA_INVALIDA = "A categoria informada não é válida.";
     public static final String QTD_CARACTERISTICAS_INVALIDA = "Informe pelo menos 3 características do produto.";
     public static final String DESCRICAO_CARACTERISTICA_INVALIDA = "A descrição informada para a categoria é inválida.";
+    public static final String QTD_IMAGENS_INVALIDA = "Forneça pelo menos 1 imagem do produto.";
 }
