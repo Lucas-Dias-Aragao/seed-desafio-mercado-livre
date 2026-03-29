@@ -1,7 +1,7 @@
 package com.dev.eficiente.desafio.marketplace.model.vo;
 
 import com.dev.eficiente.desafio.marketplace.utils.MessageConstants;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class NovasImagensRequest {
 
-    @Size(min = 1, message = MessageConstants.QTD_IMAGENS_INVALIDA)
+    @NotEmpty(message = MessageConstants.QTD_IMAGENS_INVALIDA)
     private List<MultipartFile> imagens;
 
 }

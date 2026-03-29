@@ -1,7 +1,6 @@
 package com.dev.eficiente.desafio.marketplace.controller;
 
 import com.dev.eficiente.desafio.marketplace.model.dto.UsuarioDTO;
-import com.dev.eficiente.desafio.marketplace.model.entity.Usuario;
 import com.dev.eficiente.desafio.marketplace.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 

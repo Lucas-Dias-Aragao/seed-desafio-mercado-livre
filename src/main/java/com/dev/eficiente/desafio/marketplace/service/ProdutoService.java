@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -39,10 +40,22 @@ public class ProdutoService {
     }
 
     public void cadastraImagensProduto(final Long idProduto, final NovasImagensRequest imagens, final UsuarioDTO usuarioLogado) {
+        validaSeImagensTemConteudo(imagens);
+
         Produto produto = produtoRepository.findById(idProduto)
                 .orElseThrow(() -> new BusinessException("Produto não encontrado", HttpStatus.NOT_FOUND));
 
         List<String> links = uploaderFake.upload(imagens.getImagens());
         produtoImagemService.relacionaProdutoImagem(produto, links, usuarioLogado);
     }
+
+    private void validaSeImagensTemConteudo(final NovasImagensRequest imagens) {
+        for(MultipartFile imagem : imagens.getImagens()) {
+
+            if(imagem.isEmpty()) {
+                throw new BusinessException("Imagem " + imagem.getOriginalFilename() + " não possui conteúdo válido", HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
+
 }
