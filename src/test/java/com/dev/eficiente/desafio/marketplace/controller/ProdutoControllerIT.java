@@ -3,7 +3,6 @@ package com.dev.eficiente.desafio.marketplace.controller;
 import com.dev.eficiente.desafio.marketplace.model.entity.CaracteristicaCategoria;
 import com.dev.eficiente.desafio.marketplace.model.entity.Categoria;
 import com.dev.eficiente.desafio.marketplace.model.entity.Produto;
-import com.dev.eficiente.desafio.marketplace.model.entity.ProdutoImagem;
 import com.dev.eficiente.desafio.marketplace.model.enumeration.TipoCaracteristicaEnum;
 import com.dev.eficiente.desafio.marketplace.model.vo.ProdutoCaracteristicaRequestVo;
 import com.dev.eficiente.desafio.marketplace.model.vo.ProdutoRequestVo;
@@ -25,7 +24,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -155,7 +153,7 @@ public class ProdutoControllerIT extends BaseControllerIT {
             @Test
             @DisplayName("Se dados válidos, salve imagens do produto com sucesso")
             void deveFazerUploadDasImagensDoProdutoComSucesso() throws Exception {
-                Produto produto = createProduto();
+                Produto produto = createProduto(usuario.getId());
 
                 MockMultipartFile imagem = createMockImagem("img1", "conteudo fake");
                 MockMultipartFile imagem2 = createMockImagem("img2", "conteudo fake");
@@ -190,7 +188,7 @@ public class ProdutoControllerIT extends BaseControllerIT {
             @Test
             @DisplayName("Se lista de imagens for vazia, deve lançar exception")
             void seListaDeImagensForVaziaDeveLancarException() throws Exception {
-                Produto produto = createProduto();
+                Produto produto = createProduto(usuario.getId());
 
                 StringBuilder url = new StringBuilder(URL_PRODUTOS)
                         .append(URL_BARRA)
@@ -218,7 +216,7 @@ public class ProdutoControllerIT extends BaseControllerIT {
             @Test
             @DisplayName("deve lançar exception se conteudo da imagem for inválido")
             void deveLancarExceptionSeConteudoDeImagensForInvalido() throws Exception {
-                Produto produto = createProduto();
+                Produto produto = createProduto(usuario.getId());
                 MockMultipartFile imagem = createMockImagem("img1", "");
 
                 StringBuilder url = new StringBuilder(URL_PRODUTOS)
@@ -243,6 +241,39 @@ public class ProdutoControllerIT extends BaseControllerIT {
 
                 assertEquals(400, response.getStatus());
                 assertEquals("Imagem " + imagem.getOriginalFilename() + " não possui conteúdo válido", errorResponse.get("mensagem"));
+            }
+
+            @Test
+            @DisplayName("Não deve permitir upload de imagem se o usuário não for o mesmo que criou o produto")
+            void naoDevePermitirUploadDeImagensSeUsuarioForDiferenteDeQuemCriouOProduto() throws Exception {
+                Produto produto = createProduto(58000L);
+
+                MockMultipartFile imagem = createMockImagem("img1", "conteudo fake");
+                MockMultipartFile imagem2 = createMockImagem("img2", "conteudo fake");
+
+                StringBuilder url = new StringBuilder(URL_PRODUTOS)
+                        .append(URL_BARRA)
+                        .append(produto.getId())
+                        .append(URL_BARRA)
+                        .append(URL_IMAGEM);
+
+                MvcResult result = mockMvc.perform(multipart(url.toString())
+                                .file(imagem)
+                                .file(imagem2)
+                                .header(HttpHeaders.AUTHORIZATION, generatedToken())
+                                .contentType(MediaType.MULTIPART_FORM_DATA)
+                                .with(request -> {
+                                    request.setMethod("POST");
+                                    return request;
+                                })
+                        )
+                        .andReturn();
+
+                MockHttpServletResponse response = result.getResponse();
+                Map<String, String> errorResponse = objectMapper.readValue(response.getContentAsString(), Map.class);
+
+                assertEquals(400, response.getStatus());
+                assertEquals(MessageConstants.ACAO_NAO_PERMITIDA, errorResponse.get("mensagem"));
             }
 
         }
@@ -280,7 +311,7 @@ public class ProdutoControllerIT extends BaseControllerIT {
         return novaCategoria;
     }
 
-    private Produto createProduto() {
+    private Produto createProduto(final Long idUsuarioCadastro) {
         Produto produto = Produto.builder()
                 .nome("Smartphone Xing Ling")
                 .descricao("Smartphone Xing Ling 256gb")
@@ -289,6 +320,7 @@ public class ProdutoControllerIT extends BaseControllerIT {
                 .dataInclusao(LocalDateTime.now())
                 .categoria(categoriaCelulares)
                 .caracteristicas(List.of())
+                .usuarioLog(idUsuarioCadastro)
                 .build();
 
         produto = produtoRepository.save(produto);
