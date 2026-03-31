@@ -28,10 +28,10 @@ public class ProdutoService {
     private final ProdutoImagemService produtoImagemService;
 
     @Transactional
-    public void cadastraProduto(ProdutoRequestVo vo) {
+    public void cadastraProduto(ProdutoRequestVo vo, UsuarioDTO usuarioLogado) {
 
         Categoria categoria = categoriaService.findCategoriaById(vo.categoriaId());
-        Produto produto = ProdutoFactory.create(vo, categoria);
+        Produto produto = ProdutoFactory.create(vo, categoria, usuarioLogado.getId());
 
         produto = produtoRepository.saveAndFlush(produto);
 

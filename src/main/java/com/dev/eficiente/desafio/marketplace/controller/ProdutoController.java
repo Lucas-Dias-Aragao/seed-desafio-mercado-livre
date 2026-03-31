@@ -22,8 +22,8 @@ public class ProdutoController extends BaseController {
     private final ProdutoService produtoService;
 
     @PostMapping
-    public void cadastraProduto(@RequestBody @Valid ProdutoRequestVo vo) {
-        produtoService.cadastraProduto(vo);
+    public void cadastraProduto(@RequestBody @Valid ProdutoRequestVo vo, Principal usuarioLogado) {
+        produtoService.cadastraProduto(vo, getUsuarioLogado(usuarioLogado));
     }
 
     @PostMapping("/{idProduto}/imagens")
