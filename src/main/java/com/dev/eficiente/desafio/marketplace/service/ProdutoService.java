@@ -8,6 +8,7 @@ import com.dev.eficiente.desafio.marketplace.model.factory.ProdutoFactory;
 import com.dev.eficiente.desafio.marketplace.model.vo.NovasImagensRequest;
 import com.dev.eficiente.desafio.marketplace.model.vo.ProdutoRequestVo;
 import com.dev.eficiente.desafio.marketplace.repository.ProdutoRepository;
+import com.dev.eficiente.desafio.marketplace.utils.MessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -45,8 +47,16 @@ public class ProdutoService {
         Produto produto = produtoRepository.findById(idProduto)
                 .orElseThrow(() -> new BusinessException("Produto não encontrado", HttpStatus.NOT_FOUND));
 
+        validaPermissaoUsuario(usuarioLogado.getId(), produto.getUsuarioLog());
+
         List<String> links = uploaderFake.upload(imagens.getImagens());
         produtoImagemService.relacionaProdutoImagem(produto, links, usuarioLogado);
+    }
+
+    private void validaPermissaoUsuario(final Long idUsuarioLogado, final Long idUsuarioCriadorProduto) {
+        if(!Objects.equals(idUsuarioLogado, idUsuarioCriadorProduto)) {
+            throw new BusinessException(MessageConstants.ACAO_NAO_PERMITIDA, HttpStatus.BAD_REQUEST);
+        }
     }
 
     private void validaSeImagensTemConteudo(final NovasImagensRequest imagens) {
