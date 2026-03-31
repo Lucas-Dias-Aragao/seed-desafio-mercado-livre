@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,6 +56,9 @@ public class Produto {
     @Getter
     @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProdutoCaracteristica> caracteristicas;
+
+    @Column(name = "USUARIO_LOG")
+    private Long usuarioLog;
 
     @Getter
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)

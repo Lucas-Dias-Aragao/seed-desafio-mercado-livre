@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public class ProdutoFactory {
 
-    public static Produto create(final ProdutoRequestVo vo, final Categoria categoria) {
+    public static Produto create(final ProdutoRequestVo vo, final Categoria categoria, final Long idUsuarioCadastro) {
         return Produto.builder()
                 .nome(vo.nome())
                 .valor(vo.valor())
@@ -16,6 +16,7 @@ public class ProdutoFactory {
                 .qtdDisponivel(vo.quantidade())
                 .dataInclusao(LocalDateTime.now())
                 .categoria(categoria)
+                .usuarioLog(idUsuarioCadastro)
                 .build();
     }
 
