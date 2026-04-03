@@ -12,10 +12,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(schema = "marketplace", name = "TB_AVALIACAO")
 public class Avaliacao {
 
@@ -26,7 +30,7 @@ public class Avaliacao {
     @Column(name = "ESTRELA", nullable = false)
     @Min(1)
     @Max(5)
-    private Short ESTRELA;
+    private Short estrela;
 
     @Column(name = "TITULO", nullable = false)
     private String titulo;
