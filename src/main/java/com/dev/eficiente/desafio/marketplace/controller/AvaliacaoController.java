@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +26,8 @@ public class AvaliacaoController extends BaseController {
 
     @PostMapping("/{idProduto}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseMessageDto cadastraAvaliacao(@RequestBody @Valid AvaliacaoRequestVo vo, Principal usuarioLogado) {
-        return avaliacaoService.cadastraAvaliacao(vo, getUsuarioLogado(usuarioLogado));
+    public ResponseMessageDto cadastraAvaliacao(@RequestBody @Valid AvaliacaoRequestVo vo, @PathVariable("idProduto") Long idProduto, Principal usuarioLogado) {
+        return avaliacaoService.cadastraAvaliacao(vo, idProduto, getUsuarioLogado(usuarioLogado));
     }
 
 }

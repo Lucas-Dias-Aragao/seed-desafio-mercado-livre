@@ -43,8 +43,7 @@ public class ProdutoService {
     public void cadastraImagensProduto(final Long idProduto, final NovasImagensRequest imagens, final UsuarioDTO usuarioLogado) {
         validaSeImagensTemConteudo(imagens);
 
-        Produto produto = produtoRepository.findById(idProduto)
-                .orElseThrow(() -> new BusinessException("Produto não encontrado", HttpStatus.NOT_FOUND));
+        Produto produto = findProdutoById(idProduto);
 
         validaPermissaoUsuario(usuarioLogado.getId(), produto.getUsuarioLog());
 
@@ -65,6 +64,11 @@ public class ProdutoService {
                 throw new BusinessException("Imagem " + imagem.getOriginalFilename() + " não possui conteúdo válido", HttpStatus.BAD_REQUEST);
             }
         }
+    }
+
+    public Produto findProdutoById(final Long idProduto) {
+        return produtoRepository.findById(idProduto)
+                .orElseThrow(() -> new BusinessException("Produto não encontrado", HttpStatus.NOT_FOUND));
     }
 
 }
