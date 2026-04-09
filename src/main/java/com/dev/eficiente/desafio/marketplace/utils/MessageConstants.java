@@ -24,4 +24,5 @@ public class MessageConstants {
     public static final String QTD_ESTRELA_INVALIDA = "A avaliação deve ter entre 1 e 5 estrelas";
     public static final String DESCRICAO_AVALIACAO_INVALIDA = "A descrição da avaliação deve ter entre 10 e 500 caracteres.";
     public static final String TITULO_INVALIDO = "O título é obrigatório.";
+    public static final String PERGUNTA_INVALIDA = "Por favor, envie uma pergunta válida.";
 }
