@@ -23,11 +23,10 @@ public class PerguntaService {
 
     public ResponseMessageDto cadastraNovaPergunta(@Valid PerguntaRequestVo vo, Long idProduto, UsuarioDTO usuarioLogado) {
         Produto produto = produtoService.findProdutoById(idProduto);
-
-        prepararEnvioEmail(vo, produto, usuarioLogado);
-
         Pergunta pergunta = PerguntaFactory.create(vo, produto, usuarioLogado.getId());
         perguntaRepository.save(pergunta);
+        prepararEnvioEmail(vo, produto, usuarioLogado);
+
         return new ResponseMessageDto("Pergunta enviada com sucesso!");
     }
 
