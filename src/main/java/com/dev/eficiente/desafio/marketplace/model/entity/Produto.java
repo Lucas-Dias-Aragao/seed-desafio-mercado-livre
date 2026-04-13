@@ -33,6 +33,7 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(name = "NOME", nullable = false)
     private String nome;
 
