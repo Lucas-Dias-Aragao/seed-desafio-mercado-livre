@@ -42,8 +42,9 @@ public class UsuarioService {
         return new UsuarioDTO(usuario.getId(), usuario.getLogin());
     }
 
-    public Usuario findUsuarioById(final Long idUsuario) {
-        return usuarioRepository.findById(idUsuario)
+    public UsuarioDTO findUsuarioById(final Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado", HttpStatus.NOT_FOUND));
+        return new UsuarioDTO(usuario.getId(), usuario.getLogin());
     }
 }
