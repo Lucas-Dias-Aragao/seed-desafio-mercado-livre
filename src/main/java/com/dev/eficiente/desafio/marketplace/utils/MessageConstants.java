@@ -25,4 +25,5 @@ public class MessageConstants {
     public static final String DESCRICAO_AVALIACAO_INVALIDA = "A descrição da avaliação deve ter entre 10 e 500 caracteres.";
     public static final String TITULO_INVALIDO = "O título é obrigatório.";
     public static final String PERGUNTA_INVALIDA = "Por favor, envie uma pergunta válida.";
+    public static final String TAMANHO_PERGUNTA_INVALIDA = "Pergunta inválida, ela deve ter entre 10 e 500 caracteres.";
 }
