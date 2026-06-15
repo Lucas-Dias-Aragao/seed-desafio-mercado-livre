@@ -114,6 +114,27 @@ public class PerguntaControllerIT extends BaseControllerIT {
 
         }
 
+        @Test
+        @DisplayName("Se produto não existir, deve lançar exception")
+        void testDeveLancarExceptionSeProdutoNaoExistir() throws Exception {
+            PerguntaRequestVo vo = new PerguntaRequestVo("Ainda tem em estoque?");
+
+            String url = URL_PERGUNTAS + "/" + 55555;
+
+            MvcResult result = mockMvc.perform(post(url)
+                            .header(HttpHeaders.AUTHORIZATION, generatedToken())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(vo)))
+                    .andReturn();
+
+            MockHttpServletResponse response = result.getResponse();
+            Map<String, String> errorResponse = objectMapper.readValue(response.getContentAsString(), Map.class);
+
+            assertEquals(404, response.getStatus());
+            assertEquals("Produto não encontrado", errorResponse.get("mensagem"));
+
+        }
+
     }
 
     @BeforeAll
