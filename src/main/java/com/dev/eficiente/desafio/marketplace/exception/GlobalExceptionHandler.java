@@ -19,7 +19,8 @@ public class GlobalExceptionHandler {
         Map<String, String> fieldErrors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage,
+                        (first, second) -> first));
 
         return ResponseEntity.status(ex.getStatusCode()).body(fieldErrors);
     }
